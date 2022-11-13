@@ -1,6 +1,5 @@
 package transport;
 import lombok.Getter;
-
 import static java.lang.Character.isDigit;
 
 @Getter
@@ -16,10 +15,13 @@ public class Car{
     private String regNumber;
     private final int seats;
     private String typeTyre;
+    private Key key;
+    private Insurance insurance;
 
 
     public Car(String brand, String model, int productionYear, String productionCountry, String color,
-               double engineVolume, boolean transmission, String bodyType, String regNumber, int seats, boolean typeTyre){
+               double engineVolume, boolean transmission, String bodyType, String regNumber, int seats,
+               boolean typeTyre, Key key, Insurance insurance){
         boolean regNumberCorrect = false;
         if (brand.length() <= 0 || brand == null){
             this.brand = "default";
@@ -72,7 +74,6 @@ public class Car{
                 case 7 :
                 case 8 : regNumberCorrect = isDigit(regNumber.toCharArray()[i]);
                     break;
-
             }
             if(!regNumberCorrect){
                 break;
@@ -87,7 +88,65 @@ public class Car{
             this.bodyType = bodyType;
         }
         this.typeTyre = typeTyre ? "летняя" : "зимняя";
+        this.key = key;
+        this.insurance = insurance;
 
+    }
+    public static class Key {
+        private String remoteStart;
+        private String keylessAccess;
+
+        public Key(boolean remoteStart, boolean keylessAccess) {
+            this.remoteStart = remoteStart ? "Удаленным запуском двигателя" : "Обычным запуском двигателя";
+            this.keylessAccess = keylessAccess ? "Доступом к авто без ключа" : "Доступом к авто с ключем";
+        }
+        @Override
+        public String toString() {
+            return "Автомобиль с : " + remoteStart + " и " + keylessAccess;
+        }
+    }
+    public static class Insurance {
+        private int validity;
+        private double costInsurance;
+        private String numberInsurance;
+        public Insurance(int validity, double costInsurance, String numberInsurance){
+
+            if (validity < java.time.LocalDate.now().getYear()) {
+                this.validity = validity;
+            }
+            if (costInsurance < 0){
+                this.costInsurance = 0;
+            } else {
+                this.costInsurance = costInsurance;
+            }
+            boolean correctNumberInsurance = false;
+            if(numberInsurance.length() == 9 && numberInsurance != null) {
+                for (int i = 0; i < numberInsurance.length(); i++){
+                    switch (i) {
+                        case 0 : correctNumberInsurance = !isDigit(numberInsurance.toCharArray()[i]);
+                        case 1 :
+                            break;
+                        case 2 :
+                        case 3 :
+                        case 4 :
+                        case 5 :
+                        case 6 :
+                        case 7 :
+                        case 8 : correctNumberInsurance = isDigit(numberInsurance.toCharArray()[i]);
+                            break;
+                    }
+                    if(!correctNumberInsurance){
+                        break;
+                    }
+                }
+            }
+            this.numberInsurance = correctNumberInsurance ? numberInsurance : "Некоректный номер страховки";
+        }
+    @Override
+    public String toString() {
+        return "Номер стразовки : " + numberInsurance + ". Срок действия страховки до : " + validity +
+                ". Стоимость страховки : " + costInsurance + ".";
+    }
     }
     public Car setColor(String color) {
         this.color = color;
@@ -116,7 +175,7 @@ public class Car{
                 + productionCountry + ". Цвет " + color + ". Объем двигателя - " + engineVolume + " литра. "
                 + "Тип коробки передач: " + transmission + ". Тип кузова: "
                 + bodyType + ". Регистрационный номер автомобиля: " + regNumber + ". Количество мест: "
-                + seats + ". На автомобиле установленна " + typeTyre + " резина.";
+                + seats + ". На автомобиле установленна " + typeTyre + " резина. " + getKey() + ". " + getInsurance();
     }
     public static void printAllCar(Car[] car) {
         for (Car car1 : car) {

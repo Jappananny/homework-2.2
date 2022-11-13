@@ -15,9 +15,11 @@ public class Main {
         flower[2] = new Flower("Пион","","Англия",69.9,1);
         flower[3] = new Flower("Гипсофила","","Турция",19.5,10);
         //
+        Car.Key keyLada = new Car.Key(false,false);
+        Car.Insurance insuranceLada = new Car.Insurance(2015, 5500,"АЯ8990780");
         Car[] car = new Car[5];
         car[0] = new Car("Lada", "", 2015, "", "желтый", 1.7,
-                false,"Седан","М655AS32",3,   false);
+                false,"Седан","М655AS32",3,   false,keyLada,insuranceLada);
         //car[1] = new transport.Car("Audi", "A8 50 L TDI quattro", 2020, "Германии", "черного", 3.0);
         //car[2] = new transport.Car("BMW", "Z8", 2021,"Германии", "черный", 3.0);
         //car[3] = new transport.Car("Kia", "Sportage 4 поколение", 2018, "Южной Корее", "красного", 2.4);
@@ -33,6 +35,7 @@ public class Main {
         System.out.println("================================================================");
         //System.out.println(car[0].toString());
         transport.Car.printAllCar(car);
+        System.out.println("================================================================");
 
     }
 }
